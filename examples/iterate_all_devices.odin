@@ -1,11 +1,11 @@
 package examples
 
 import "core:fmt"
-import "../odin-libudev"
+import udev "../odin-libudev"
 
-main :: proc()
+iterate_all_devices :: proc()
 {
-  // Example for iterating over all devices and printing their /dev path.
+  // Example of iterating over all devices, printing their path and type.
   
   inst := udev.new()
   defer udev.unref(inst)
@@ -26,7 +26,12 @@ main :: proc()
     devnode := udev.device_get_devnode(device)
     if len(devnode) > 0
     {
-      fmt.println(devnode)
+      devtype := udev.device_get_devtype(device)
+      if devtype == nil do devtype = "unknown"
+      
+      fmt.println("node:", devnode)
+      fmt.println("type:", devtype)
+      fmt.println()
     }
   }
 }
