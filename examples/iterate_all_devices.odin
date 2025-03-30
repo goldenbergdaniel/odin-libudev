@@ -1,0 +1,30 @@
+package examples
+
+import "core:fmt"
+import "../odin-libudev"
+
+main :: proc()
+{
+  // Example for iterating over all devices and printing their /dev path.
+  
+  inst := udev.new()
+
+  enumerate := udev.enumerate_new(inst)
+  udev.enumerate_scan_devices(enumerate)
+  
+  devices := udev.enumerate_get_list_entry(enumerate)
+  
+  iterator := udev.make_list_entry_iterator(devices)
+  for entry in udev.iterate_list_entries(&iterator)
+  {
+    path := udev.list_entry_get_name(entry)
+    device := udev.device_new_from_syspath(inst, path)
+    defer udev.device_unref(device)
+
+    devnode := udev.device_get_devnode(device)
+    if len(devnode) > 0
+    {
+      fmt.println(devnode)
+    }
+  }
+}
