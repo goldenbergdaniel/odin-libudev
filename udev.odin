@@ -107,7 +107,13 @@ foreign lib
   hwdb_new :: proc(udev: UDev) -> HWDB ---
   hwdb_get_properties_list_entry :: proc(hwdb: HWDB, modalias: cstring, flags: u32) -> List_Entry ---
 
-  util_encode_string :: proc(str: cstring, str_enc: [^]byte, len: uint) -> i32 ---
+  @(private)
+  _util_encode_string :: proc(str: cstring, str_enc: [^]byte, len: uint) -> i32 ---
+}
+
+util_encode_string :: #force_inline proc "c" (str: cstring, str_enc: []byte) -> i32
+{
+  return _util_encode_string(str, raw_data(str_enc), uint(len(str_enc)))
 }
 
 List_Entry_Iterator :: struct
