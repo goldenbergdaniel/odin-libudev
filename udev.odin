@@ -110,20 +110,36 @@ foreign lib
   util_encode_string :: proc(str: cstring, str_enc: [^]byte, len: uint) -> i32 ---
 }
 
-/*
- Helper to iterate over all entries of a list.
- 
- * @list_entry:  entry to store the current position
- * @first_entry: first entry to start with
-*/
-list_entry_foreach :: proc(list_entry, first_entry: List_Entry) -> List_Entry
+List_Entry_Iterator :: struct
 {
-  result: List_Entry
-  
-  for next_entry := first_entry; next_entry != nil; next_entry = list_entry_get_next(list_entry)
+  data: List_Entry,
+  idx:  int,
+}
+
+// Create a device list entry iterator.
+make_list_entry_iterator :: proc(first: List_Entry) -> List_Entry_Iterator
+{
+  return {data=first, idx=0}
+}
+
+// Iterate over all device entries in list.
+iterate_list_entries :: proc(
+  iter: ^List_Entry_Iterator,
+) -> (
+  val:  List_Entry,
+  idx:  int, 
+  cond: bool,
+)
+{
+  iter.data = list_entry_get_next(iter.data)
+  if iter.data != nil
   {
-    result = next_entry
+    val = iter.data
+    idx = iter.idx
+    cond = true
+
+    iter.idx += 1
   }
 
-  return result
+  return val, idx, cond
 }
