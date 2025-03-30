@@ -8,10 +8,12 @@ main :: proc()
   // Example for iterating over all devices and printing their /dev path.
   
   inst := udev.new()
+  defer udev.unref(inst)
 
   enumerate := udev.enumerate_new(inst)
+  defer udev.enumerate_unref(enumerate)
   udev.enumerate_scan_devices(enumerate)
-  
+
   devices := udev.enumerate_get_list_entry(enumerate)
   
   iterator := udev.make_list_entry_iterator(devices)
