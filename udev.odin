@@ -118,12 +118,12 @@ foreign lib
 */
 list_entry_foreach :: proc(list_entry, first_entry: List_Entry) -> List_Entry
 {
-  result := first_entry
-
-  for result != nil
+  result: List_Entry
+  
+  for next_entry := first_entry; next_entry != nil; next_entry = list_entry_get_next(list_entry)
   {
-    result = list_entry_get_next(list_entry)
-  } 
+    result = next_entry
+  }
 
   return result
 }
