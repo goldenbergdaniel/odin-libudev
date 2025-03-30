@@ -14,9 +14,9 @@ HWDB       :: distinct rawptr
 @(default_calling_convention="c", link_prefix="udev_")
 foreign lib
 {
-  new :: proc() -> UDev ---
   ref :: proc(udev: UDev) -> UDev ---
   unref :: proc(udev: UDev) -> UDev ---
+  new :: proc() -> UDev ---
 
   list_entry_get_next :: proc(list_entry: List_Entry) -> List_Entry ---
   list_entry_get_by_name :: proc(list_entry: List_Entry, name: cstring) -> List_Entry ---
@@ -32,12 +32,12 @@ foreign lib
   device_new_from_environment :: proc(udev: UDev) -> Device ---
   device_get_parent :: proc(device: Device) -> Device ---
   device_get_devpath :: proc(device: Device) -> cstring ---
-  device_get_subsystem :: proc(dev: Device) -> cstring ---
-  device_get_devtype :: proc(dev: Device) -> cstring ---
-  device_get_syspath :: proc(dev: Device) -> cstring ---
-  device_get_sysname :: proc(dev: Device) -> cstring ---
-  device_get_sysnum :: proc(dev: Device) -> cstring ---
-  device_get_devnode :: proc(dev: Device) -> cstring ---
+  device_get_subsystem :: proc(device: Device) -> cstring ---
+  device_get_devtype :: proc(device: Device) -> cstring ---
+  device_get_syspath :: proc(device: Device) -> cstring ---
+  device_get_sysname :: proc(device: Device) -> cstring ---
+  device_get_sysnum :: proc(device: Device) -> cstring ---
+  device_get_devnode :: proc(device: Device) -> cstring ---
   device_get_is_initialized :: proc(device: Device) -> b32 ---
   device_get_devlinks_list_entry :: proc(device: Device) -> List_Entry ---
   device_get_properties_list_entry :: proc(device: Device) -> List_Entry ---
@@ -71,9 +71,9 @@ foreign lib
   monitor_filter_update :: proc(monitor: Monitor) -> i32 ---
   monitor_filter_remove :: proc(monitor: Monitor) -> i32 ---
 
-  enumerate_new :: proc(udev: UDev) -> Enumerate ---
   enumerate_ref :: proc(enumerate: Enumerate) -> Enumerate ---
   enumerate_unref :: proc(enumerate: Enumerate) -> Enumerate ---
+  enumerate_new :: proc(udev: UDev) -> Enumerate ---
   enumerate_get_udev :: proc(enumerate: Enumerate) -> UDev ---
   /* device properties filter */
   enumerate_add_match_subsystem :: proc(enumerate: Enumerate, subsystem: cstring) -> i32 ---
@@ -92,9 +92,9 @@ foreign lib
   /* return device list */
   enumerate_get_list_entry :: proc(enumerate: Enumerate) -> List_Entry ---
 
-  queue_new :: proc(udev: UDev) -> Queue ---
   queue_ref :: proc(queue: Queue) -> Queue ---
   queue_unref :: proc(queue: Queue) -> Queue ---
+  queue_new :: proc(udev: UDev) -> Queue ---
   queue_get_udev :: proc(queue: Queue) -> UDev ---
   queue_get_udev_is_active :: proc(queue: Queue) -> b32 ---
   queue_get_queue_is_empty :: proc(queue: Queue) -> b32 ---
@@ -102,9 +102,9 @@ foreign lib
   queue_get_fd :: proc(queue: Queue) -> i32 ---
   queue_flush :: proc(queue: Queue) -> i32 ---
 
-  hwdb_new :: proc(udev: UDev) -> HWDB ---
   hwdb_ref :: proc(hwdb: HWDB) -> HWDB ---
   hwdb_unref :: proc(hwdb: HWDB) -> HWDB ---
+  hwdb_new :: proc(udev: UDev) -> HWDB ---
   hwdb_get_properties_list_entry :: proc(hwdb: HWDB, modalias: cstring, flags: u32) -> List_Entry ---
 
   util_encode_string :: proc(str: cstring, str_enc: [^]byte, len: uint) -> i32 ---
